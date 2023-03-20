@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	db.DBConnection()
+	db.DBconnection()
 	r := mux.NewRouter()
 	r.HandleFunc("/", routes.Home)
 
