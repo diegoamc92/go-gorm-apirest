@@ -37,5 +37,13 @@ func PostUserHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Delete"))
+	var duser models.User
+	params := mux.Vars(r)
+	db.DB.First(&duser, params["id"])
+	if duser.ID == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("User not found"))
+	}
+	db.DB.Delete(&duser)
+	w.WriteHeader(http.StatusOK)
 }
