@@ -12,7 +12,7 @@ import (
 
 func main() {
 	db.DBconnection()
-	db.DB.AutoMigrate(models.Task{})
+	db.DB.AutoMigrate(models.Tasks{})
 
 	err := db.DB.AutoMigrate(models.User{})
 	if err != nil {
@@ -20,11 +20,20 @@ func main() {
 	}
 
 	r := mux.NewRouter()
+
+	//user route
 	r.HandleFunc("/", routes.Home)
 	r.HandleFunc("/users", routes.GetUsersHandler).Methods("GET")
 	r.HandleFunc("/users/{id}", routes.GetUserHandler).Methods("GET")
 	r.HandleFunc("/users", routes.PostUserHandler).Methods("POST")
 	r.HandleFunc("/users/{id}", routes.DeleteUserHandler).Methods("DELETE")
 
-	_ = http.ListenAndServe(":3000", r)
+	//Tasks routes
+
+	r.HandleFunc("/tasks", routes.GetTasksHandler).Methods("GET")
+	r.HandleFunc("/tasks", routes.CreateTaskHandler).Methods("POST")
+	r.HandleFunc("/tasks/{id}", routes.GetTaskHandler).Methods("GET")
+	r.HandleFunc("/tasks/{id}", routes.DeleteTaskHandler).Methods("DELETE")
+
+	http.ListenAndServe(":3000", r)
 }

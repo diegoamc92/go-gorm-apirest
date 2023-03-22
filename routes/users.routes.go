@@ -22,6 +22,7 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("User not found"))
 		return
 	}
+	db.DB.Model(&user).Association("Tasks").Find(&user.Tasks)
 	json.NewEncoder(w).Encode(&user)
 }
 func PostUserHandler(w http.ResponseWriter, r *http.Request) {
